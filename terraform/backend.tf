@@ -10,11 +10,11 @@ terraform {
     }
   }
 
-  backend "local" {
-    # resource_group_name  = "rg-terraform"
-    # storage_account_name = "stplatformterraform"
-    # container_name       = "tfstatefile-infrastructure"
-    # key                  = "infrastructure"
+  backend "azurerm" {
+    resource_group_name  = "rg-terraform"
+    storage_account_name = "stplatformterraform"
+    container_name       = "tfstatefile-infrastructure"
+    key                  = "infrastructure"
   }
 }
 provider "azurerm" {
