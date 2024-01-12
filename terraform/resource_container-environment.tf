@@ -17,11 +17,10 @@ resource "azurecaf_name" "environment" {
 }
 
 resource "azurerm_container_app_environment" "integrations" {
-  name                           = azurecaf_name.environment.result
-  location                       = var.location
-  resource_group_name            = azurerm_resource_group.applications.name
-  log_analytics_workspace_id     = azurerm_log_analytics_workspace.log_analytics_workspace.id
-  internal_load_balancer_enabled = false
+  name                       = azurecaf_name.environment.result
+  location                   = var.location
+  resource_group_name        = azurerm_resource_group.applications.name
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.analytics.id
 
   workload_profile {
     name                  = "internal"
@@ -31,6 +30,6 @@ resource "azurerm_container_app_environment" "integrations" {
   }
 
   depends_on = [
-    azurerm_subnet.container
+    azurerm_log_analytics_workspace.analytics
   ]
 }
