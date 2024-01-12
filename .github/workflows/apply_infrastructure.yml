@@ -1,5 +1,12 @@
 name: Run Azure Login with OpenID Connect
-on: [push]
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Bootstrap environment
+        type: environment
+        required: true
 
 permissions:
       id-token: write
