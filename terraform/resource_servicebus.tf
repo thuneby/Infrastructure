@@ -9,7 +9,7 @@ resource "azurerm_servicebus_namespace" "infrastructure" {
   resource_group_name = azurerm_resource_group.rg_shared_services.name
   location            = azurerm_resource_group.rg_shared_services.location
   sku                 = "Basic"
-  capacity            = 1
+  capacity            = 0
 
   identity {
     type = "SystemAssigned"
