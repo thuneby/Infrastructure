@@ -17,3 +17,9 @@ resource "azurerm_api_management" "infrastructure" {
     type = "SystemAssigned"
   }
 }
+
+resource "azurerm_role_assignment" "apim_service_contributor" {
+  scope                = azurerm_app_configuration.infrastructure.id
+  role_definition_name = "API Management Service Contributor"
+  principal_id         = data.azurerm_client_config.current.object_id
+}
