@@ -82,8 +82,14 @@ resource "azurerm_container_registry" "infrastructure_container_registry" {
   }
 }
 
-resource "azurerm_app_configuration" "infrastructure_app_configuration" {
-  name                = "infrastructure-app-configuration"
+resource "azurecaf_name" "app_configuration" {
+  name          = "infrastructure"
+  resource_type = "azurerm_app_configuration"
+  clean_input   = true
+}
+
+resource "azurerm_app_configuration" "infrastructure" {
+  name                = azurecaf_name.app_configuration.result
   resource_group_name = azurerm_resource_group.rg_shared_services.name
   location            = azurerm_resource_group.rg_shared_services.location
   sku                 = "free"
@@ -101,7 +107,7 @@ resource "azurerm_app_configuration" "infrastructure_app_configuration" {
 }
 
 resource "azurerm_role_assignment" "app_configuration_data_owner" {
-  scope                = azurerm_app_configuration.infrastructure_app_configuration.id
+  scope                = azurerm_app_configuration.infrastructure.id
   role_definition_name = "App Configuration Data Owner"
   principal_id         = data.azurerm_client_config.current.object_id
 }
