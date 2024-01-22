@@ -46,6 +46,18 @@ resource "azurerm_key_vault" "infrastructure_keyvault" {
   }
 }
 
+resource "azurerm_role_assignment" "key_vault_access_spn" {
+  role_definition_name = "Key Vault Secrets Officer"
+  scope                = azurerm_key_vault.infrastructure_keyvault.id
+  principal_id         = data.azurerm_client_config.current.object_id
+}
+
+resource "azurerm_role_assignment" "key_vault_cert_access_spn" {
+  role_definition_name = "Key Vault Certificates Officer"
+  scope                = azurerm_key_vault.infrastructure_keyvault.id
+  principal_id         = data.azurerm_client_config.current.object_id
+}
+
 resource "azurecaf_name" "container_registry_name" {
   name          = "thuneby-infrastructure"
   resource_type = "azurerm_container_registry"
@@ -68,4 +80,28 @@ resource "azurerm_container_registry" "infrastructure_container_registry" {
       tags
     ]
   }
+}
+
+resource "azurerm_app_configuration" "infrastructure_app_configuration" {
+  name                = "infrastructure-app-configuration"
+  resource_group_name = azurerm_resource_group.rg_shared_services.name
+  location            = azurerm_resource_group.rg_shared_services.location
+  sku                 = "free"
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
+
+}
+
+resource "azurerm_role_assignment" "app_configuration_data_owner" {
+  scope                = azurerm_app_configuration.infrastructure_app_configuration.id
+  role_definition_name = "App Configuration Data Owner"
+  principal_id         = data.azurerm_client_config.current.object_id
 }
