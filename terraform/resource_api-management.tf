@@ -1,5 +1,5 @@
 resource "azurecaf_name" "apim_name" {
-  name          = "infrastructure-apim"
+  name          = "infrastructure"
   resource_type = "azurerm_api_management"
   clean_input   = true
 }
