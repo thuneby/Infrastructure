@@ -1,3 +1,7 @@
+locals {
+  crname = "thuneby-infrastructure"
+}
+
 resource "azurecaf_name" "rg_shared_services_name" {
   name          = "shared-services"
   resource_type = "azurerm_resource_group"
@@ -28,7 +32,7 @@ resource "azurerm_key_vault" "infrastructure_keyvault" {
   resource_group_name         = azurerm_resource_group.rg_shared_services.name
   location                    = azurerm_resource_group.rg_shared_services.location
   enabled_for_disk_encryption = true
-  sku_name                    = "standard"
+  sku_name                    = var.key_vault_sku
 
   purge_protection_enabled   = false
   soft_delete_retention_days = 7
@@ -59,7 +63,7 @@ resource "azurerm_role_assignment" "key_vault_cert_access_spn" {
 }
 
 resource "azurecaf_name" "container_registry_name" {
-  name          = "thuneby-infrastructure"
+  name          = local.crname
   resource_type = "azurerm_container_registry"
   clean_input   = true
 }
@@ -68,7 +72,7 @@ resource "azurerm_container_registry" "infrastructure_container_registry" {
   name                = azurecaf_name.container_registry_name.result
   resource_group_name = azurerm_resource_group.rg_shared_services.name
   location            = azurerm_resource_group.rg_shared_services.location
-  sku                 = "Basic"
+  sku                 = var.container_registry_sku
   admin_enabled       = true
 
   identity {
@@ -92,8 +96,7 @@ resource "azurerm_app_configuration" "infrastructure" {
   name                = azurecaf_name.app_configuration.result
   resource_group_name = azurerm_resource_group.rg_shared_services.name
   location            = azurerm_resource_group.rg_shared_services.location
-  sku                 = "free"
-
+  sku                 = var.app_configuration_sku
   identity {
     type = "SystemAssigned"
   }
