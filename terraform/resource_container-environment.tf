@@ -33,3 +33,42 @@ resource "azurerm_container_app_environment" "integrations" {
     azurerm_log_analytics_workspace.analytics
   ]
 }
+
+resource "azurerm_user_assigned_identity" "dapr" {
+  location            = var.location
+  name                = "id-dapr"
+  resource_group_name = azurerm_resource_group.applications.name
+}
+
+resource "azurerm_role_assignment" "key_vault_access_dapr" {
+  role_definition_name = "Key Vault User"
+  scope                = azurerm_key_vault.infrastructure_keyvault.id
+  principal_id         = azurerm_user_assigned_identity.dapr.principal_id
+
+  depends_on = [
+    azurerm_key_vault.infrastructure_keyvault,
+    azurerm_user_assigned_identity.dapr
+  ]
+}
+
+
+resource "azurerm_container_app_environment_dapr_component" "secret-store" {
+  name                         = "secret-store"
+  container_app_environment_id = azurerm_container_app_environment.integrations.id
+  component_type               = "secretstores.azure.keyvault"
+  version                      = "v1"
+  metadata {
+    name  = "vaultName"
+    value = azurerm_key_vault.infrastructure_keyvault.name
+  }
+  metadata {
+    name  = "azureClientId"
+    value = azurerm_user_assigned_identity.dapr.client_id
+  }
+
+  depends_on = [
+    azurerm_container_app_environment.integrations,
+    azurerm_key_vault.infrastructure_keyvault,
+    azurerm_role_assignment.key_vault_access_dapr
+  ]
+}
