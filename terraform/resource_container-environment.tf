@@ -41,7 +41,7 @@ resource "azurerm_user_assigned_identity" "dapr" {
 }
 
 resource "azurerm_role_assignment" "key_vault_access_dapr" {
-  role_definition_name = "Key Vault User"
+  role_definition_name = "Key Vault Secrets User"
   scope                = azurerm_key_vault.infrastructure_keyvault.id
   principal_id         = azurerm_user_assigned_identity.dapr.principal_id
 
