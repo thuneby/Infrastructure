@@ -47,7 +47,8 @@ resource "azurerm_cognitive_deployment" "chatmodel" {
   }
 
   scale {
-    type = "Standard"
+    type     = "Standard"
+    capacity = 20
   }
 
   depends_on = [
