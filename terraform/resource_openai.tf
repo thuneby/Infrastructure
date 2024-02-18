@@ -10,7 +10,7 @@ resource "azurecaf_name" "rg-openai" {
 }
 
 resource "azurerm_resource_group" "openai" {
-  name     = azurecaf_name.resource-group.result
+  name     = azurecaf_name.rg-openai.result
   location = var.location
 }
 
