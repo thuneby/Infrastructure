@@ -42,14 +42,12 @@ resource "azurerm_cognitive_deployment" "chatmodel" {
   cognitive_account_id = azurerm_cognitive_account.openai.id
 
   model {
-    format  = "OpenAI"
-    name    = "gpt-35-turbo"
-    version = "0613"
+    format = "OpenAI"
+    name   = "gpt-35-turbo"
   }
 
   scale {
     type = "Standard"
-    tier = "Free"
   }
 
   depends_on = [
