@@ -37,3 +37,8 @@ variable "openai_location" {
   type    = string
   default = "SwedenCentral"
 }
+
+variable "cosmos_troughput" {
+  type    = number
+  default = 400
+}

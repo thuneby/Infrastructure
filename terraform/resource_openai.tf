@@ -1,5 +1,5 @@
 locals {
-  rg-name         = "openai"
+  openai-rg-name  = "openai"
   resource-name   = "infrastructure"
   deployment-name = "chatmodel"
   model-name      = "gpt-4o-mini"
@@ -7,7 +7,7 @@ locals {
 }
 
 resource "azurecaf_name" "rg-openai" {
-  name          = local.rg-name
+  name          = local.openai-rg-name
   resource_type = "azurerm_resource_group"
 }
 
