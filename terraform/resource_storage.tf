@@ -32,6 +32,14 @@ resource "azurerm_storage_account" "infrastructure_file_storage" {
   account_replication_type = "LRS"
 }
 
+resource "azurerm_storage_container" "uploads" {
+  name                  = "uploads"
+  storage_account_name  = azurerm_storage_account.infrastructure_file_storage.name
+  container_access_type = "private"
+}
+
+########## Cosmos DB ##########
+
 resource "azurecaf_name" "cosmos_account_name" {
   name          = local.cosmos_account_name
   resource_type = "azurerm_cosmosdb_account"
