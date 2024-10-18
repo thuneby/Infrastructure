@@ -1,4 +1,5 @@
 locals {
+  storage-rg-name     = "storage"
   cosmos_account_name = "infrastructure"
   cosmos_db_name      = "infrastructure"
   cosmos_free_tier    = true
@@ -6,7 +7,7 @@ locals {
 
 
 resource "azurecaf_name" "rg-storage" {
-  name          = local.rg-name
+  name          = local.storage-rg-name
   resource_type = "azurerm_resource_group"
 }
 
