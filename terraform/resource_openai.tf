@@ -11,7 +11,7 @@ resource "azurecaf_name" "rg-openai" {
 
 resource "azurerm_resource_group" "openai" {
   name     = azurecaf_name.rg-openai.result
-  location = var.location
+  location = var.openai_location
 }
 
 resource "azurecaf_name" "cognitive_account" {
@@ -40,15 +40,14 @@ resource "azurerm_cognitive_account" "openai" {
 resource "azurerm_cognitive_deployment" "chatmodel" {
   name                 = local.deployment-name
   cognitive_account_id = azurerm_cognitive_account.openai.id
-
   model {
-    format = "OpenAI"
-    name   = "gpt-35-turbo"
+    format  = "OpenAI"
+    name    = "gpt-4o-mini"
+    version = "2024-07-18"
   }
 
-  scale {
-    type     = "Standard"
-    capacity = 20
+  sku {
+    name = "Standard"
   }
 
   depends_on = [

@@ -32,3 +32,8 @@ variable "app_configuration_sku" {
   type    = string
   default = "free"
 }
+
+variable "openai_location" {
+  type    = string
+  default = "SwedenCentral"
+}
