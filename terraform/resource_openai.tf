@@ -1,7 +1,9 @@
 locals {
   rg-name         = "openai"
-  deployment-name = "chatmodel"
   resource-name   = "infrastructure"
+  deployment-name = "chatmodel"
+  model-name      = "gpt-4o-mini"
+  model-version   = "2024-07-18"
 }
 
 resource "azurecaf_name" "rg-openai" {
@@ -42,8 +44,8 @@ resource "azurerm_cognitive_deployment" "chatmodel" {
   cognitive_account_id = azurerm_cognitive_account.openai.id
   model {
     format  = "OpenAI"
-    name    = "gpt-4o-mini"
-    version = "2024-07-18"
+    name    = local.model-name
+    version = local.model-version
   }
 
   sku {
