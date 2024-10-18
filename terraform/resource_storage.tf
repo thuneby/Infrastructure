@@ -24,7 +24,7 @@ resource "azurecaf_name" "infrastructure_file_storage" {
   random_length = 5
 }
 
-resource "azurerm_storage_account" "integration_functions" {
+resource "azurerm_storage_account" "infrastructure_file_storage" {
   name                     = azurecaf_name.infrastructure_file_storage.result
   resource_group_name      = azurerm_resource_group.rg_storage.name
   location                 = azurerm_resource_group.rg_storage.location
