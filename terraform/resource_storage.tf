@@ -34,7 +34,7 @@ resource "azurerm_storage_account" "infrastructure_file_storage" {
 
 resource "azurerm_storage_container" "uploads" {
   name                  = "uploads"
-  storage_account_name  = azurerm_storage_account.infrastructure_file_storage.name
+  storage_account_id    = azurerm_storage_account.infrastructure_file_storage.id
   container_access_type = "private"
 }
 
